@@ -1,25 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useReducer } from 'react'
+import * as Styled from './styled'
+import { Header } from './components/header'
+import { Main } from './components/main'
+import { Footer } from './components/footer'
+import { DATA } from './data/index'
+import { reducer } from './reduser/rootReducer'
+import { StateContext, DispatchContext } from './provider/index'
+
 
 function App() {
+  const [state, dispatch] = useReducer(reducer, DATA)
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Styled.App>
+      <StateContext.Provider value={{ state }}>
+        <DispatchContext.Provider value={{ dispatch }}>
+          <Styled.Container>
+            <Styled.Modal>
+              <Header />
+              <Main />
+              <Footer state={state.value} dispatch={dispatch} />
+            </Styled.Modal>
+          </Styled.Container>
+        </DispatchContext.Provider>
+      </StateContext.Provider>
+    </Styled.App>
+  )
 }
 
-export default App;
+export default App
